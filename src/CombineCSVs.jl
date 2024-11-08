@@ -1,5 +1,10 @@
 module CombineCSVs
 
-# Write your package code here.
+using DataFrames 
+using CSV
+
+include("combine.jl")
+
+export combine_csvs
 
 end
