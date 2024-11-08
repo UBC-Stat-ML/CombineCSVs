@@ -21,5 +21,5 @@ For more information use `?combine_csvs` or [see the doc](https://github.com/UBC
 
 ```
 using Pkg
-Pkg.add("https://github.com/UBC-Stat-ML/CombineCSVs.git")
+Pkg.add(url = "https://github.com/UBC-Stat-ML/CombineCSVs.git")
 ```
