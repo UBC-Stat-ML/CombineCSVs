@@ -52,3 +52,18 @@ end
 
    @test string(combine_csvs("example5"; file_delim = "__", file_assign = "-")) == ref
 end
+
+@testset "CSV parsing opts" begin
+    
+    ref = """4×4 DataFrame
+    Row │ a       b          first   second
+        │ Int64?  String15?  Int64?  Int64?
+   ─────┼───────────────────────────────────
+      1 │      1  asf,asd         1       2
+      2 │      1  asf,asd         3       4
+      3 │      2  asf,asd 2       5       6
+      4 │      2  asf,asd 2       7       8"""
+   
+       @test string(combine_csvs("example7"; comment = "#")) == ref
+
+end

@@ -1,5 +1,5 @@
 """
-    combine(source; file_delim = "___", file_assign = "=", csv_parsing_args...)
+    combine_csvs(source; file_delim = "___", file_assign = "=", csv_parsing_args...)
 
 Reads in a collection of CSV files and perform a join based on file name information. 
 
@@ -42,7 +42,7 @@ function combine_csvs(source; file_delim = "___", file_assign = "=", csv_parsing
     result = nothing
     prev_names =  nothing
     for i in eachindex(paths)
-        current = CSV.read(paths[i], DataFrame, csv_parsing_args...)
+        current = CSV.read(paths[i], DataFrame; csv_parsing_args...)
         if i == 1
             prev_names = names(current)
             @assert isdisjoint(names(index), prev_names) "Header and csv keys expected disjoint but got: $(names(index)), $(names(current))"
