@@ -46,9 +46,7 @@ function combine_csvs(input_dir, output_dir; file_delim = "___", file_assign = "
         result = nothing
         prev_names =  nothing
         for i in eachindex(paths)
-            # note: this could be done in constant memory, but not a huge 
-            # priority since downstream scripts will need to load in memory the merged one anyways
-            current = CSV.read("$input_dir/$(paths[i])/$key", DataFrame; types = String, csv_parsing_args...)
+            current = CSV.read("$input_dir/$(paths[i])/$key", DataFrame; limit = 1, types = String, csv_parsing_args...)
             if i == 1
                 prev_names = names(current)
                 @assert isdisjoint(names(index), prev_names) "Header and csv keys expected disjoint but got: $(names(index)), $(names(current))"
@@ -57,7 +55,7 @@ function combine_csvs(input_dir, output_dir; file_delim = "___", file_assign = "
                 @assert names(current) == prev_names "All csv should have the same keys but got: $(names(current)), $prev_names"
             end
             index_row = Tuple(index[i, :])
-            for r in eachrow(current)
+            for r in CSV.Rows("$input_dir/$(paths[i])/$key"; csv_parsing_args...)
                 data_row = Tuple(r) 
                 push!(result, (index_row..., data_row...))
             end
