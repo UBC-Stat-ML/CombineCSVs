@@ -48,7 +48,7 @@ function combine_csvs(input_dir, output_dir; file_delim = "___", file_assign = "
         for i in eachindex(paths)
             # note: this could be done in constant memory, but not a huge 
             # priority since downstream scripts will need to load in memory the merged one anyways
-            current = CSV.read("$input_dir/$(paths[i])/$key", DataFrame; csv_parsing_args...)
+            current = CSV.read("$input_dir/$(paths[i])/$key", DataFrame; types = String, csv_parsing_args...)
             if i == 1
                 prev_names = names(current)
                 @assert isdisjoint(names(index), prev_names) "Header and csv keys expected disjoint but got: $(names(index)), $(names(current))"
