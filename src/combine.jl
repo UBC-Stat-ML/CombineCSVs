@@ -34,6 +34,8 @@ If the input directories contain not just my_csv.csv but my_csv1.csv, my_csv2.cs
 is repeated. We do not assume my_csv1.csv and my_csv2.csv have the same columns. 
 
 The default choice of `___` and `=` can be overridden with `file_delim` and `file_assign` respectively. 
+
+Operation is done in a streaming fashion i.e. memory requirement does not grow in the number of rows. 
 """
 function combine_csvs(input_dir, output_dir; file_delim = "___", file_assign = "=", csv_parsing_args...)
     mkpath(output_dir)
@@ -55,7 +57,7 @@ function combine_csvs(input_dir, output_dir; file_delim = "___", file_assign = "
                 @assert names(current) == prev_names "All csv should have the same keys but got: $(names(current)), $prev_names"
             end
             index_row = Tuple(index[i, :])
-            for r in CSV.Rows("$input_dir/$(paths[i])/$key"; csv_parsing_args...)
+            for r in CSV.Rows("$input_dir/$(paths[i])/$key"; reusebuffer = true, csv_parsing_args...)
                 data_row = Tuple(r) 
                 push!(result, (index_row..., data_row...))
             end

@@ -103,3 +103,23 @@ end
     @test string(df2) == ref2
 
 end
+
+
+@testset "Weird csv" begin
+    ref = """4×4 DataFrame
+ Row │ a      b          first  second
+     │ Int64  String15   Int64  Int64
+─────┼─────────────────────────────────
+   1 │     1  asf,asd        1       2
+   2 │     1  asf,asd        3       4
+   3 │     2  asf,asd 2      5       6
+   4 │     2  asf,asd 2      7       8"""
+
+    df = combine_csvs_as_df("example9", comment = "#")
+
+    @test nrow(df) == 4
+    @test df[1,"second"] == """2
+    blah"""
+
+end
+
