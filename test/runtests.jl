@@ -118,7 +118,7 @@ end
     df = combine_csvs_as_df("example9", comment = "#")
 
     @test nrow(df) == 4
-    @test df[1,"second"] == """2
+    @test replace(df[1,"second"], "\r" => "") == """2
     blah"""
 
 end
